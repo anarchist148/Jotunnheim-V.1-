@@ -3,19 +3,24 @@ if not game:IsLoaded() then
     until game:IsLoaded()
 end
 
-if game.CoreGui:FindFirstChild("Venyx") then
-    game.CoreGui:FindFirstChild("Venyx"):destroy()
+
+local guiname = "Jotunnheim V.1 Demo"
+
+if game.CoreGui:FindFirstChild(guiname) then
+    game.CoreGui:FindFirstChild(guiname):destroy()
     end
     
     local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/GreenDeno/Venyx-UI-Library/main/source.lua"))()
-    local venyx = library.new("Jotunnheim V.1", 5013109572)
+    local venyx = library.new(guiname, 5013109572)
     
     
     -- variables/tables:
     _G.console = false
     _G.chatmessages = true
     local god = false
+    local spam = false
     local ff = false
+    antilag = false
     local plrs = game:GetService("Players")
     local plr = plrs.LocalPlayer
     local plrgui = plr.PlayerGui
@@ -91,10 +96,6 @@ if game.CoreGui:FindFirstChild("Venyx") then
     -- first page
     local page = venyx:addPage("Main", 5012544693)
     local page2 = venyx:addPage("Misc", 5012544693)
-    local page3 = venyx:addPage("Visualisers", 5012544693)
-    local page4 = venyx:addPage("Tools", 5012544693)
-    local page5 = venyx:addPage("rconsole", 5012544693)
-    local page6 = venyx:addPage("Person299", 5012544693)
     
     local section1 = page:addSection("Anti Abuse")
     local section2 = page:addSection("Pads")
@@ -196,6 +197,21 @@ if game.CoreGui:FindFirstChild("Venyx") then
             end)()
             else
             antifling = false
+            end
+    end)
+
+    section1:addToggle("Anti Lag", nil, function(value)
+        if value == true then
+            antilag = true
+                plr.Character.Torso.ChildAdded:Connect(function(child)
+                    if child.Name == 'Smoke' or child.Name == 'Fire' then
+                    child:Destroy()
+                    tchat("unsmoke me")
+                    tchat("unfire me")
+                    end
+                end)
+            else
+            antilag = false
             end
     end)
 
@@ -314,10 +330,10 @@ section3:addToggle("Inf Forcefield", nil, function(value)
         coroutine.wrap(function()
             tchat("ff me")
             while ff do
-    if not cha:FindFirstChild("Forcefield") then
+    if not cha:FindFirstChild("ForceField") then
         tchat("ff me")
-        task.wait(time)
         end
+        task.wait(0.2)
     end  
 end)()
 else
@@ -338,6 +354,27 @@ end)
           end)
 end)
 
+section3:addTextbox("Command", "Default", function(value, focusLost)
+    local function cmd()
+        print(value)
+        tchat(tostring(value))
+    end
+    end)
+
+    section3:addToggle("Spam Command", nil, function(value)
+        if value == true then
+            spam = true
+           coroutine.wrap(function()
+            print(spamcommand)
+             while spam do
+             cmd()
+                task.wait(time)
+            end  
+           end)()
+    else
+    spam = false 
+    end    
+    end)
 
     
   
